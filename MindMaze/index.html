@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMaze: Stoic Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="text-white min-h-screen" style="background-color: var(--color-background)">
+    <!-- Main Menu -->
+    <div id="mainMenu" class="container mx-auto px-4 py-8 min-h-screen flex flex-col items-center justify-center fade-in">
+        <h1 class="title text-6xl font-bold text-center mb-12 pulse text-shadow">
+            MindMaze
+            <span class="block text-3xl mt-2" style="color: var(--color-secondary)">Stoic Edition</span>
+        </h1>
+        
+        <div class="flex flex-col space-y-6 w-full max-w-md">
+            <button onclick="startGame()" class="btn btn-primary hover-scale no-select">
+                <i class="fas fa-play mr-2"></i> Start Journey
+            </button>
+            
+            <button onclick="showOptions()" class="btn btn-secondary hover-scale no-select">
+                <i class="fas fa-cog mr-2"></i> Options
+            </button>
+            
+            <button onclick="showCredits()" class="btn btn-secondary hover-scale no-select">
+                <i class="fas fa-info-circle mr-2"></i> Credits
+            </button>
+        </div>
+
+        <p class="mt-12" style="color: var(--color-secondary)">Version 1.0.0</p>
+    </div>
+
+    <!-- Game View -->
+    <div id="gameView" class="hidden container mx-auto px-4 py-8 fade-in">
+        <div class="level-indicator glass-effect mb-8 flex justify-between items-center">
+            <div class="text-xl"><i class="fas fa-layer-group mr-2"></i>Level: <span id="levelNumber" class="font-bold">1</span></div>
+            <div class="text-xl"><i class="fas fa-heart mr-2"></i>Emotion: <span id="currentEmotion" class="font-bold">Fear</span></div>
+        </div>
+
+        <div id="roomsGrid" class="grid grid-cols-3 gap-6">
+            <!-- Rooms will be generated here -->
+        </div>
+    </div>
+
+    <!-- Reflection View -->
+    <div id="reflectionView" class="hidden container mx-auto px-4 py-8 max-w-2xl fade-in">
+        <div class="quote-card glass-effect">
+            <h2 id="reflectionEmotion" class="title text-3xl mb-6 text-center text-shadow">Fear</h2>
+            
+            <div class="quote-text">
+                <blockquote id="stoicQuote" class="text-xl mb-6">
+                    "The chief task in life is simply this: to identify and separate matters so that I can say clearly to myself which are externals not under my control, and which have to do with the choices I actually control."
+                </blockquote>
+            </div>
+            
+            <p id="quoteAuthor" class="text-right mb-8" style="color: var(--color-secondary)">- Epictetus</p>
+            
+            <div class="border-t pt-6" style="border-color: var(--color-secondary)">
+                <h3 class="text-xl mb-4 flex items-center">
+                    <i class="fas fa-lightbulb mr-2"></i> Reflection:
+                </h3>
+                <p id="lessonText" class="text-lg body-text">
+                    Focus on what you can control, accept what you cannot.
+                </p>
+            </div>
+
+            <button onclick="continueJourney()" class="btn btn-primary hover-scale w-full mt-8 no-select">
+                <i class="fas fa-arrow-right mr-2"></i> Continue Journey
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentLevel = 1;
+        let currentView = 'mainMenu';
+        
+        function showView(viewId) {
+            ['mainMenu', 'gameView', 'reflectionView'].forEach(id => {
+                const element = document.getElementById(id);
+                element.classList.add('hidden');
+            });
+            
+            const newView = document.getElementById(viewId);
+            newView.classList.remove('hidden');
+            currentView = viewId;
+            
+            // Add fade-in animation
+            newView.classList.add('fade-in');
+            setTimeout(() => newView.classList.remove('fade-in'), 500);
+        }
+
+        function startGame() {
+            showView('gameView');
+            generateRooms();
+        }
+
+        function generateRooms() {
+            const emotions = ['Fear', 'Anger', 'Desire', 'Anxiety', 'Pride', 'Grief', 'Envy', 'Attachment'];
+            const grid = document.getElementById('roomsGrid');
+            grid.innerHTML = '';
+
+            for (let i = 0; i < 9; i++) {
+                const emotion = emotions[Math.floor(Math.random() * emotions.length)];
+                const room = document.createElement('div');
+                room.className = `emotion-room ${emotion.toLowerCase()} h-40 flex items-center justify-center cursor-pointer hover-scale no-select slide-up`;
+                room.style.animationDelay = `${i * 0.1}s`;
+                room.onclick = () => enterRoom(emotion);
+                room.innerHTML = `
+                    <div class="text-center">
+                        <i class="fas fa-brain text-3xl mb-3"></i>
+                        <div class="text-xl font-bold">${emotion}</div>
+                    </div>
+                `;
+                grid.appendChild(room);
+            }
+        }
+
+        function enterRoom(emotion) {
+            document.getElementById('currentEmotion').textContent = emotion;
+            document.getElementById('reflectionEmotion').textContent = emotion;
+            showView('reflectionView');
+        }
+
+        function continueJourney() {
+            currentLevel++;
+            document.getElementById('levelNumber').textContent = currentLevel;
+            showView('gameView');
+            generateRooms();
+        }
+
+        function showOptions() {
+            console.log('Options menu clicked');
+        }
+
+        function showCredits() {
+            console.log('Credits clicked');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            showView('mainMenu');
+        });
+    </script>
+</body>
+</html>
