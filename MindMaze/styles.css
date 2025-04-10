@@ -1,0 +1,227 @@
+/* Base Styles */
+:root {
+    /* Emotion Colors */
+    --color-fear: rgb(75, 75, 75);
+    --color-anger: rgb(220, 38, 38);
+    --color-desire: rgb(37, 99, 235);
+    --color-anxiety: rgb(234, 179, 8);
+    --color-pride: rgb(22, 163, 74);
+    --color-grief: rgb(55, 55, 55);
+    --color-envy: rgb(147, 51, 234);
+    --color-attachment: rgb(100, 100, 100);
+
+    /* UI Colors */
+    --color-background: rgb(17, 17, 17);
+    --color-surface: rgb(31, 31, 31);
+    --color-primary: rgb(255, 255, 255);
+    --color-secondary: rgb(156, 163, 175);
+    --color-accent: rgb(59, 130, 246);
+}
+
+/* Typography */
+.title {
+    font-family: 'Philosopher', sans-serif;
+    letter-spacing: 0.05em;
+}
+
+.body-text {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to { 
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Animation Classes */
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.slide-up {
+    animation: slideUp 0.5s ease-out;
+}
+
+/* Emotion Room Styles */
+.emotion-room {
+    transition: all 0.3s ease-in-out;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.emotion-room::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.emotion-room:hover::before {
+    opacity: 1;
+}
+
+/* Emotion-specific room styles */
+.emotion-room.fear { background-color: var(--color-fear); }
+.emotion-room.anger { background-color: var(--color-anger); }
+.emotion-room.desire { background-color: var(--color-desire); }
+.emotion-room.anxiety { background-color: var(--color-anxiety); }
+.emotion-room.pride { background-color: var(--color-pride); }
+.emotion-room.grief { background-color: var(--color-grief); }
+.emotion-room.envy { background-color: var(--color-envy); }
+.emotion-room.attachment { background-color: var(--color-attachment); }
+
+/* Button Styles */
+.btn {
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: transform 0.5s ease-out, opacity 0.3s ease-out;
+}
+
+.btn:hover::after {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-background);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-background);
+}
+
+/* Quote Card Styles */
+.quote-card {
+    background-color: var(--color-surface);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.quote-text {
+    font-style: italic;
+    line-height: 1.8;
+    position: relative;
+    padding: 1rem 0;
+}
+
+.quote-text::before,
+.quote-text::after {
+    content: '"';
+    font-size: 2em;
+    color: var(--color-secondary);
+    position: absolute;
+}
+
+.quote-text::before {
+    left: -1rem;
+    top: 0;
+}
+
+.quote-text::after {
+    right: -1rem;
+    bottom: 0;
+}
+
+/* Level Indicator Styles */
+.level-indicator {
+    background-color: var(--color-surface);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .quote-text {
+        font-size: 1.1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+    }
+}
+
+/* Utility Classes */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hover-scale {
+    transition: transform 0.3s ease-in-out;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+}
